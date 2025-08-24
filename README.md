@@ -1,5 +1,3 @@
-Read, log, and visualize data from "Tuya" smart plugs. Supports real-time data collection and visualization of usage patterns through time.
-
 # SmartPlug Monitor
 
 A Python tool to read, log, and analyze power consumption from a "Tuya" smart plug.
@@ -13,6 +11,7 @@ git clone https://github.com/yourusername/smartplug-monitor.git
 cd smartplug-monitor
 pip install tinytuya
 ```
+> Making a virtual environment is strongly suggested
 
 ## Usage
 
