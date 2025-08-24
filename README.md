@@ -36,6 +36,6 @@ Each CSV file contains the following columns:
 - `current` – current in milliamps (mA)
 - `power` – power in watts (W)
 
-## TODO
+## WIP
 - Refactorize the visualization script
 - FIX: The logs skip seconds from time to time because it uses `sleep(1)` between calls to not overload the smart plug + the amount of time that the plug takes to answer the request, right now these missing rows can be filled up by using Pandas resample by second `df = df.resample("1s").ffill()`, basically if a row is missing it makes a copy of the last entry before that one, in this case it's totally fine because the values stay constant between seconds.
