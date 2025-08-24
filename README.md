@@ -1,6 +1,6 @@
 # SmartPlug Monitor
 
-A Python tool to read, log, and analyze power consumption from a "Tuya" smart plug.
+A Python tool to read, log, and analyze power consumption from a ["Tuya"](https://www.tuya.com/) smart plug.
 Supports real-time data collection (voltage, current and power) and visualization of usage patterns through time.
 Saves daily logs as CSV files.
 
