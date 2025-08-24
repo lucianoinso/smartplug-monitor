@@ -6,12 +6,13 @@ Saves daily logs as CSV files.
 
 ## Installation
 
-```bash
-git clone https://github.com/yourusername/smartplug-monitor.git
-cd smartplug-monitor
-pip install tinytuya
-```
+Clone the repository and install the requirements file.
+
 > Making a virtual environment is strongly suggested
+
+```bash
+pip install -r requirements.txt
+```
 
 ## Usage
 
@@ -35,5 +36,5 @@ Each CSV file contains the following columns:
 - `power` – power in watts (W)
 
 ## TODO
-- Upload the visualization script
+- Refactorize the visualization script
 - FIX: The logs skip seconds from time to time because it uses `sleep(1)` between calls to not overload the smart plug + the amount of time that the plug takes to answer the request, right now these missing rows can be filled up by using Pandas resample by second `df = df.resample("1s").ffill()`, basically if a row is missing it makes a copy of the last entry before that one, in this case it's totally fine because the values stay constant between seconds.
