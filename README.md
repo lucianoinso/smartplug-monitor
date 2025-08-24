@@ -6,12 +6,13 @@ Saves daily logs as CSV files.
 
 ## Installation
 
-```bash
-git clone https://github.com/yourusername/smartplug-monitor.git
-cd smartplug-monitor
-pip install tinytuya
-```
+Clone the repository and install the requirements file.
+
 > Making a virtual environment is strongly suggested
+
+```bash
+pip install -r requirements.txt
+```
 
 ## Usage
 
