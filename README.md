@@ -38,7 +38,7 @@ Each CSV file contains the following columns:
 
 ## Sample output
 
-![Example Plot](plots/example_plot.png)
+![Example Plot](plots/plot.png)
 
 ## WIP
 - Refactorize the visualization script.
