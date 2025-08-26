@@ -106,7 +106,7 @@ def visualize(df, tick_range_minutes):
 
 
 def main():
-    filename = "logs/2025-08-20.csv"
+    filename = "logs/sample.csv"
     df = pd.read_csv(filename, parse_dates=["timestamp"], index_col="timestamp")
     df = preprocess(df)
     visualize(df, tick_range_minutes=15)
