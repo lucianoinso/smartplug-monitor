@@ -1,3 +1,5 @@
+import sys
+
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
@@ -106,7 +108,12 @@ def visualize(df, tick_range_minutes):
 
 
 def main():
-    filename = "logs/sample.csv"
+    if len(sys.argv) < 2:
+        print("Usage: python visualize_usage.py <filename>")
+        sys.exit(1)
+
+    filename = f"logs/{sys.argv[1]}"
+
     df = pd.read_csv(filename, parse_dates=["timestamp"], index_col="timestamp")
     df = preprocess(df)
     visualize(df, tick_range_minutes=15)
