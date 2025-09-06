@@ -15,7 +15,7 @@ Saves daily logs as CSV files.
 pip install -r requirements.txt
 ```
 
-2. Follow the [Tinytuya guide](https://github.com/jasonacox/tinytuya) to prepare and connect with your device.
+2. Follow the [Tinytuya device preparation guide](https://github.com/jasonacox/tinytuya#tuya-device-preparation) to get the data to connect with your device.
 3. Replace `YOUR_DEVICE_ID` and `YOUR_LOCAL_KEY` in `main()` with your smart plug credentials.
 
 ## Usage
