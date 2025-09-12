@@ -14,9 +14,9 @@ LOGS_DIR = "logs"
 
 def get_values(device):
     current_status = device.status()['dps']
-    voltage = current_status[VOLTAGE] / 10 # V
-    current = current_status[CURRENT] # in mA
-    power = current_status[POWER] / 10 # in W
+    voltage = current_status[VOLTAGE] / 10  # V
+    current = current_status[CURRENT]       # in mA
+    power = current_status[POWER] / 10      # in W
     values = {
         "voltage": voltage,
         "current": current,
@@ -31,36 +31,44 @@ def capture_and_dump(device):
         os.makedirs(directory)
 
     headers = ["timestamp", "voltage", "current", "power"]
+    last_second = None
 
     while True:
         try:
             while True:
-                filename = datetime.today().strftime("%Y-%m-%d")    
-                csv_path=f"{directory}/{filename}.csv"
-                current_status = get_values(device)
-                voltage = current_status["voltage"]
-                current = current_status["current"]
-                power = current_status["power"]
-                
-                timestamp = datetime.today().strftime("%Y-%m-%d %H:%M:%S")
+                now = datetime.today()
+                current_second = now.replace(microsecond=0)
+                if current_second != last_second:
+                    current_status = get_values(device)
+                    voltage = current_status["voltage"]
+                    current = current_status["current"]
+                    power = current_status["power"]
 
-                row = [timestamp, voltage, current, power]
-                file_exists = os.path.isfile(csv_path)
+                    filename = now.strftime("%Y-%m-%d")
+                    timestamp = now.strftime("%Y-%m-%d %H:%M:%S")
 
-                with open(csv_path, mode="a", newline="") as file:
-                    writer = csv.DictWriter(file, fieldnames=headers)
+                    csv_path = f"{directory}/{filename}.csv"
 
-                    if not file_exists:
-                        writer.writeheader()
-                    
-                    writer.writerow({
-                        "timestamp": timestamp,
-                        "voltage": voltage,
-                        "current": current,
-                        "power": power,
-                    })
-                    print(f"[{timestamp}] - {current_status}")
-                sleep(1)
+                    row = [timestamp, voltage, current, power]
+                    file_exists = os.path.isfile(csv_path)
+
+                    with open(csv_path, mode="a", newline="") as file:
+                        writer = csv.DictWriter(file, fieldnames=headers)
+
+                        if not file_exists:
+                            writer.writeheader()
+
+                        writer.writerow({
+                            "timestamp": timestamp,
+                            "voltage": voltage,
+                            "current": current,
+                            "power": power,
+                        })
+                        print(f"[{timestamp}] - {current_status}")
+                    last_second = current_second
+                sleep_time = 1 - (datetime.now().microsecond / 1000000)
+                # sleep until the seconds change to save computing
+                sleep(sleep_time)
 
         except Exception as e:
             print(f"Error: {e}. Restarting loop...")
@@ -69,7 +77,7 @@ def capture_and_dump(device):
 
 def main():
     device = tinytuya.OutletDevice(
-        dev_id = 'YOUR_DEVICE_ID',
+        dev_id='YOUR_DEVICE_ID',
         address='Auto',  # Auto-discover IP address
         local_key='YOUR_LOCAL_KEY',
         version=3.4
