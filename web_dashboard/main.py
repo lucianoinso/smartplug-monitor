@@ -1,14 +1,16 @@
+from pathlib import Path
+
 from fastapi import FastAPI, Request
+from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse, JSONResponse
 import pandas as pd
 import uvicorn
 
 app = FastAPI()
-templates = Jinja2Templates(directory="templates")
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
-CSV_FILE = "logs/2025-09-12.csv"
-WEATHER_FILE = "dataset/cordoba_weather_aug_2025.csv"
+templates = Jinja2Templates(directory="templates")
 
 
 def preprocess(df):
@@ -46,16 +48,13 @@ def get_segments(df):
         "mid_time": "first",
         "duration": "first",
     })
-    # Add start/end for plotting steps
+
     df_segments = df.groupby("group").agg(start=("timestamp", "first"),
-                end=("timestamp", "last"), status=("status", "first"),
-                duration=("duration", "first"),
-                mid_time=("mid_time", "first"))
+                                          end=("timestamp", "last"),
+                                          status=("status", "first"),
+                                          duration=("duration", "first"),
+                                          mid_time=("mid_time", "first"))
     df_segments = df_segments.reset_index(drop=True)
-    # Convert timestamps to strings
-    df_segments["start"] = df_segments["start"].astype(str)
-    df_segments["end"] = df_segments["end"].astype(str)
-    df_segments["mid_time"] = df_segments["mid_time"].astype(str)
     return df_segments
 
 
@@ -64,9 +63,18 @@ async def index(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
 
+@app.get("/get-available-dates")
+async def get_available_dates():
+    available_dates = [f.stem for f in Path("logs").glob("*.csv")]
+    return JSONResponse(content={
+        "dates": available_dates
+    })
+
+
 @app.get("/init-data")
-async def init_data():
-    df = pd.read_csv(CSV_FILE, parse_dates=["timestamp"],
+async def init_data(date: str):
+    csv_file = f"logs/{date}.csv"
+    df = pd.read_csv(csv_file, parse_dates=["timestamp"],
                      index_col="timestamp")
     df = preprocess(df)
     df = df.reset_index()
