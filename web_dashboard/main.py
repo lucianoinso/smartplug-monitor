@@ -43,12 +43,6 @@ def preprocess(df):
 
 
 def get_segments(df):
-    grouped = df.groupby("group").agg({
-        "status": "first",
-        "mid_time": "first",
-        "duration": "first",
-    })
-
     df_segments = df.groupby("group").agg(start=("timestamp", "first"),
                                           end=("timestamp", "last"),
                                           status=("status", "first"),
