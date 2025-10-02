@@ -10,35 +10,36 @@
   </head>
 
   <body>
-    <h1>Water heater usage <span class="current-date"></span></h1>
-
-    <div id="date-container">
-      <label for="datePicker">Select a date:</label>
-      <input type="text" id="datePicker" placeholder="Pick a date">
-    </div>
-
-    <div id="dashboard-container">
-      <div class="dashboard-item plot-cumulative" style="display: flex; flex-direction: column; align-items: center; width: 100%;">
-        <div class="plot-cumulative-title" style="font-size: 20px; font-weight: bold; margin-bottom: 20px;" >Cumulative consumption</div>
-        <div id="plot-cumulative" class="plot-container"><div class="spinner"></div></div>
+    <div id="body-container">
+      <div id="dashboard-title">Electric Usage Dashboard</div>
+      <div id="date-container">
+        <label for="datePicker">Date</label>
+        <!-- <span class="current-date"></span> -->
+        <input type="text" id="datePicker" placeholder="Pick a date">
       </div>
-
-      <div class="right-top" style="display: flex; flex-direction: column; align-items: center; width: 100%;">
-        <div class="dashboard-item total-consumption numeric-metrics-container" style="display: flex; flex-direction: column; align-items: center; width: 100%;">
-          <div class="total-kwh-title" style="font-size: 20px; font-weight: bold; margin-bottom: 20px;">Total consumption</div>
-          <div id="total-kwh" style="font-size: 40px; font-weight: bold; margin-bottom: 20px; color: green"><div class="spinner"></div></div>
+      <div id="dashboard-container">
+        <div class="dashboard-widget plot-cumulative" style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+          <div class="plot-cumulative-title widget-title">Cumulative consumption</div>
+          <div id="plot-cumulative" class="plot-container"><div class="spinner"></div></div>
         </div>
-        <div class="dashboard-item total-consumption-cost numeric-metrics-container" style="display: flex; flex-direction: column; align-items: center; width: 100%;">
-          <div class="consumption-cost-title" style="font-size: 20px; font-weight: bold; margin-bottom: 20px;">Daily cost</div>
-          <div id="total-consumption" style="font-size: 40px; font-weight: bold; margin-bottom: 20px; color: green"><div class="spinner"></div></div>
+
+        <div class="right-top" style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+          <div class="dashboard-widget total-consumption numeric-metrics-container" style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+            <div class="total-kwh-title widget-title">Total consumption</div>
+            <div id="total-kwh" class="widget-metric"><div class="spinner"></div></div>
+          </div>
+          <div class="dashboard-widget total-consumption-cost numeric-metrics-container" style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+            <div class="consumption-cost-title widget-title">Daily cost</div>
+            <div id="total-consumption" class="widget-metric"><div class="spinner"></div></div>
+          </div>
         </div>
-      </div>
 
-      <div class="dashboard-item plot-status" style="display: flex; flex-direction: column; align-items: center; width: 100%;">
-        <div class="plot-status-title" style="font-size: 20px; font-weight: bold; margin-bottom: 20px;">Status</div>
-        <div id="plot-status" class="plot-container"><div class="spinner"></div></div>
-      </div>
+        <div class="dashboard-widget plot-status" style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+          <div class="plot-status-title widget-title">Status</div>
+          <div id="plot-status" class="plot-container"><div class="spinner"></div></div>
+        </div>
 
+      </div>
     </div>
 
     <script>
@@ -49,7 +50,9 @@
           const availableDates = payload.dates.sort();
           async function setDate(selectedDates, dateStr, instance) {
             let currentDate = document.getElementsByClassName("current-date")[0];
-            currentDate.innerText = `(${dateStr})`;
+            if(currentDate) {
+              currentDate.innerText = `(${dateStr})`;
+            }
             initPlot(dateStr);
           }
 
